@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Progress Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Dark Theme Styles */
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #212529, #343a40);
+      padding: 40px;
+      color: #f8f9fa;
+    }
+
+    .container {
+      max-width: 950px;
+      margin: auto;
+      background: #343a40;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 35px;
+      font-size: 2.8rem;
+      color: #e9ecef;
+    }
+
+    .section {
+      margin-bottom: 50px;
+      border-bottom: 1px solid #495057;
+      padding-bottom: 30px;
+    }
+
+    .section:last-child {
+      border-bottom: none;
+    }
+
+    .section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      color: #adb5bd;
+      border-bottom: 2px solid #6c757d;
+      padding-bottom: 8px;
+    }
+
+    canvas {
+      max-width: 300px;
+      margin: 20px auto;
+      display: block;
+    }
+
+    .card, .checkbox-group label {
+      transition: transform 0.2s;
+    }
+
+    .card {
+      background: #495057;
+      color: #e9ecef;
+      padding: 20px 25px;
+      margin: 12px 0;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card:hover {
+      transform: scale(1.01);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .counter-controls {
+      display: flex;
+      align-items: center;
+    }
+
+    .counter-controls button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      margin: 0 5px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .counter-controls button:hover {
+      background: #0056b3;
+    }
+
+    .counter-controls .count {
+      font-size: 1.2rem;
+      min-width: 30px;
+      text-align: center;
+      display: inline-block;
+      color: #e9ecef;
+    }
+
+    .checkbox-group {
+      padding: 10px 0;
+    }
+
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      margin: 8px 0;
+      font-size: 1.05rem;
+      color: #ced4da;
+      cursor: pointer;
+      padding: 8px 10px;
+      border-radius: 6px;
+    }
+
+    .checkbox-group label:hover {
+      background-color: #495057;
+    }
+
+    input[type="checkbox"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #007bff;
+      border-radius: 4px;
+      margin-right: 12px;
+      position: relative;
+      background-color: #343a40;
+    }
+
+    input[type="checkbox"]:checked {
+      background-color: #007bff;
+    }
+
+    input[type="checkbox"]:checked::after {
+      content: '✔';
+      color: white;
+      font-size: 12px;
+      position: absolute;
+      left: 3px;
+      top: -1px;
+    }
+
+    .nested-checkbox-group {
+      margin-left: 20px;
+      padding-left: 15px;
+      border-left: 1px solid #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>My Progress Tracker</h1>
+
+    <div class="section">
+      <h2>LeetCode Questions</h2>
+      <canvas id="leetcodeChart"></canvas>
+      <div class="card"><span>Easy</span><div class="counter-controls" data-key="easy"><button class="decrease">-</button><span class="count">0</span><button class="increase">+</button></div></div>
+      <div class="card"><span>Medium</span><div class="counter-controls" data-key="medium"><button class="decrease">-</button><span class="count">0</span><button class="increase">+</button></div></div>
+      <div class="card"><span>Hard</span><div class="counter-controls" data-key="hard"><button class="decrease">-</button><span class="count">0</span><button class="increase">+</button></div></div>
+    </div>
+
+    <div class="section">
+      <h2>Contests Given</h2>
+      <canvas id="contestChart"></canvas>
+      <div class="card"><span>LeetCode Contests</span><div class="counter-controls" data-key="leetcodeContests"><button class="decrease">-</button><span class="count">0</span><button class="increase">+</button></div></div>
+      <div class="card"><span>Codeforces Contests</span><div class="counter-controls" data-key="codeforcesContests"><button class="decrease">-</button><span class="count">0</span><button class="increase">+</button></div></div>
+    </div>
+
+    <div class="section">
+      <h2>Subjects Completed</h2>
+      <canvas id="subjectsChart"></canvas>
+      <div class="checkbox-group">
+        <label><input type="checkbox" data-key="dbms"> DBMS</label>
+        <label><input type="checkbox" data-key="oops"> OOPs</label>
+        <label><input type="checkbox" data-key="cn"> Computer Networks</label>
+        <label><input type="checkbox" data-key="os"> Operating System</label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Python Libraries for Data Science</h2>
+      <canvas id="librariesChart"></canvas>
+      <div class="checkbox-group">
+        <label><input type="checkbox" data-key="pandas"> pandas</label>
+        <label><input type="checkbox" data-key="numpy"> numpy</label>
+        <label><input type="checkbox" data-key="matplotlib"> matplotlib</label>
+        <label><input type="checkbox" data-key="seaborn"> seaborn</label>
+        <label><input type="checkbox" data-key="plotly"> plotly</label>
+        <label><input type="checkbox" data-key="sqlalchemy"> sqlalchemy</label>
+        <label><input type="checkbox" data-key="scikitlearn"> scikit-learn</label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>CDS</h2>
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" data-key="english"> English
+        </label>
+        <div class="nested-checkbox-group">
+          <label><input type="checkbox" data-key="english_vocabulary"> Vocabulary</label>
+          <label><input type="checkbox" data-key="english_spotting_error"> Spotting the Error</label>
+          <label><input type="checkbox" data-key="english_sentence_improvement"> Sentence Improvement</label>
+          <label><input type="checkbox" data-key="english_comprehension"> Comprehension</label>
+          <label><input type="checkbox" data-key="english_one_word_substitution"> One Word Substitution</label>
+        </div>
+        <label>
+          <input type="checkbox" data-key="maths"> Maths
+        </label>
+        <div class="nested-checkbox-group">
+          <label><input type="checkbox" data-key="maths_time_distance"> Time and Distance</label>
+          <label><input type="checkbox" data-key="maths_number_system"> Number System</label>
+          <label><input type="checkbox" data-key="maths_hcf_lcm"> HCF LCM</label>
+          <label><input type="checkbox" data-key="maths_percentage"> Percentage</label>
+          <label><input type="checkbox" data-key="maths_circle"> Circle</label>
+          <label><input type="checkbox" data-key="maths_quadratic_equation"> Quadratic Equation</label>
+          <label><input type="checkbox" data-key="maths_lines_angles"> Lines and Angles</label>
+          <label><input type="checkbox" data-key="maths_trigonometry"> Trigonometry</label>
+          <label><input type="checkbox" data-key="maths_heights_distance"> Heights and Distance</label>
+          <label><input type="checkbox" data-key="maths_area_perimeter"> Area and Perimeter</label>
+          <label><input type="checkbox" data-key="maths_surface_area"> Surface Area</label>
+          <label><input type="checkbox" data-key="maths_statistics"> Statistics</label>
+        </div>
+        <label><input type="checkbox" data-key="science"> Science</label>
+        <div class="nested-checkbox-group">
+          <label><input type="checkbox" data-key="science_physics"> Physics</label>
+          <label><input type="checkbox" data-key="science_chemistry"> Chemistry</label>
+        </div>
+        <label><input type="checkbox" data-key="current_affairs"> Current Affairs</label>
+        <label><input type="checkbox" data-key="pyqs"> PYQs</label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>DSA Concepts</h2>
+      <canvas id="dsaChart"></canvas>
+      <div class="checkbox-group">
+        <label><input type="checkbox" data-key="dsa_bit_manipulation"> Bit Manipulation</label>
+        <label><input type="checkbox" data-key="dsa_sorting"> Sorting</label>
+        <label>
+          <input type="checkbox" data-key="dsa_binary_search"> Binary Search
+        </label>
+        <div class="nested-checkbox-group">
+          <label><input type="checkbox" data-key="dsa_binary_search_1d"> 1D</label>
+          <label><input type="checkbox" data-key="dsa_binary_search_2d"> 2D</label>
+        </div>
+        <label><input type="checkbox" data-key="dsa_linkedlist"> Linked List</label>
+        <label><input type="checkbox" data-key="dsa_array"> Array</label>
+        <label><input type="checkbox" data-key="dsa_stacks_queues"> Stacks/Queues</label>
+        <label><input type="checkbox" data-key="dsa_recursion"> Recursion</label>
+        <label><input type="checkbox" data-key="dsa_dynamic_programming"> Dynamic Programming</label>
+        <label><input type="checkbox" data-key="dsa_trees"> Trees</label>
+        <label><input type="checkbox" data-key="dsa_graphs"> Graphs</label>
+        <label><input type="checkbox" data-key="dsa_greedy"> Greedy</label>
+        <label><input type="checkbox" data-key="dsa_number_theory"> Number Theory</label>
+        <label><input type="checkbox" data-key="dsa_important_algorithms"> Important Algorithms</label>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const counters = ["easy", "medium", "hard", "leetcodeContests", "codeforcesContests"];
+    const topLevelCheckboxes = ["dbms", "oops", "cn", "os", "pandas", "numpy", "matplotlib", "seaborn", "plotly", "sqlalchemy", "scikitlearn", "english", "maths", "science", "current_affairs", "pyqs", "dsa_bit_manipulation", "dsa_sorting", "dsa_binary_search", "dsa_linkedlist", "dsa_array", "dsa_stacks_queues", "dsa_recursion", "dsa_dynamic_programming", "dsa_trees", "dsa_graphs", "dsa_greedy", "dsa_number_theory", "dsa_important_algorithms"];
+    const nestedCheckboxes = [
+      "english_vocabulary", "english_spotting_error", "english_sentence_improvement", "english_comprehension", "english_one_word_substitution",
+      "maths_time_distance", "maths_number_system", "maths_hcf_lcm", "maths_percentage", "maths_circle", "maths_quadratic_equation", "maths_lines_angles", "maths_trigonometry", "maths_heights_distance", "maths_area_perimeter", "maths_surface_area", "maths_statistics",
+      "science_physics", "science_chemistry",
+      "dsa_binary_search_1d", "dsa_binary_search_2d"
+    ];
+    const allCheckboxes = [...topLevelCheckboxes, ...nestedCheckboxes];
+
+    let values = {};
+    counters.forEach(key => {
+      const wrapper = document.querySelector(`.counter-controls[data-key="${key}"]`);
+      const countSpan = wrapper.querySelector(".count");
+      let count = parseInt(localStorage.getItem(key)) || 0;
+      countSpan.textContent = count;
+      values[key] = count;
+
+      wrapper.querySelector(".increase").addEventListener("click", () => {
+        values[key]++;
+        localStorage.setItem(key, values[key]);
+        countSpan.textContent = values[key];
+        updateCharts();
+      });
+
+      wrapper.querySelector(".decrease").addEventListener("click", () => {
+        if (values[key] > 0) {
+          values[key]--;
+          localStorage.setItem(key, values[key]);
+          countSpan.textContent = values[key];
+          updateCharts();
+        }
+      });
+    });
+
+    allCheckboxes.forEach(key => {
+      const checkbox = document.querySelector(`input[data-key="${key}"]`);
+      checkbox.checked = localStorage.getItem(key) === "true";
+      checkbox.addEventListener("change", () => {
+        localStorage.setItem(key, checkbox.checked);
+        updateCharts();
+      });
+    });
+
+    // Initialize Charts
+    const leetcodeChart = new Chart(document.getElementById("leetcodeChart"), {
+      type: 'doughnut',
+      data: {
+        labels: ["Easy", "Medium", "Hard"],
+        datasets: [{ data: [0, 0, 0], backgroundColor: ["Green", "Yellow", "Red"] }]
+      }
+    });
+
+    const contestChart = new Chart(document.getElementById("contestChart"), {
+      type: 'doughnut',
+      data: {
+        labels: ["LeetCode", "Codeforces"],
+        datasets: [{ data: [0, 0], backgroundColor: ["#28a745", "#dc3545"] }]
+      }
+    });
+
+    const subjectsChart = new Chart(document.getElementById("subjectsChart"), {
+      type: 'doughnut',
+      data: {
+        labels: ["Completed", "Remaining"],
+        datasets: [{ data: [0, 4], backgroundColor: ["#198754", "#6c757d"] }]
+      }
+    });
+
+    const librariesChart = new Chart(document.getElementById("librariesChart"), {
+      type: 'doughnut',
+      data: {
+        labels: ["Completed", "Remaining"],
+        datasets: [{ data: [0, 7], backgroundColor: ["#ffc107", "#6c757d"] }]
+      }
+    });
+
+    const dsaChart = new Chart(document.getElementById("dsaChart"), {
+      type: 'doughnut',
+      data: {
+        labels: ["Completed", "Remaining"],
+        datasets: [{ data: [0, 14], backgroundColor: ["#007bff", "#6c757d"] }]
+      }
+    });
+
+    const leetcodeSection = document.querySelector('.section h2:nth-child(1)').parentNode; // Select the LeetCode section
+    const totalSolvedElement = document.createElement('div');
+    totalSolvedElement.classList.add('card');
+    totalSolvedElement.innerHTML = `<span>Total Solved</span><span id="totalLeetCode">0</span>`;
+    leetcodeSection.appendChild(totalSolvedElement);
+      
+    function updateCharts() {
+      leetcodeChart.data.datasets[0].data = [values.easy, values.medium, values.hard];
+      const totalLeetCodeSolved = values.easy + values.medium + values.hard;
+      document.getElementById('totalLeetCode').textContent = totalLeetCodeSolved;
+      leetcodeChart.data.datasets[0].data = [values.easy, values.medium, values.hard];
+      contestChart.data.datasets[0].data = [values.leetcodeContests, values.codeforcesContests];
+
+      const completedSubjects = topLevelCheckboxes.slice(0, 4).filter(k => localStorage.getItem(k) === "true").length;
+      subjectsChart.data.datasets[0].data = [completedSubjects, 4 - completedSubjects];
+
+      const completedLibs = topLevelCheckboxes.slice(4, 11).filter(k => localStorage.getItem(k) === "true").length;
+      librariesChart.data.datasets[0].data = [completedLibs, 7 - completedLibs];
+
+      const completedDSA = topLevelCheckboxes.slice(17).filter(k => localStorage.getItem(k) === "true").length +
+                           nestedCheckboxes.slice(14).filter(k => localStorage.getItem(k) === "true").length;
+      dsaChart.data.datasets[0].data = [completedDSA, 14 - completedDSA];
+
+      leetcodeChart.update();
+      contestChart.update();
+      subjectsChart.update();
+      librariesChart.update();
+      dsaChart.update();
+    }
+
+    // Initial chart update
+    updateCharts();
+  </script>
+</body>
+</html>
