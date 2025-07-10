@@ -36,23 +36,17 @@ A live demo is not currently available. Clone the repository and run it locally 
    git clone https://github.com/Abhibhav2003/Progress-Tracker
    cd progress-tracker
    ```
-2. ```
+2. **Navigate To Backend**
+   ```
    cd backend/
-   ```
-   ```
    npm install
-   ```
-   ```
    npm run dev
    ```
 
-3. ```
+3. **Navigate To Frontend**
+   ```
    cd frontend/ 
-   ```
-   ```
    npm install
-   ```
-   ```
    npm start
    ```
 
