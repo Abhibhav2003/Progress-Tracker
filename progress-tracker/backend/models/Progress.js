@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const ProgressSchema = new mongoose.Schema({
-  userId: { type: String, required: true, default: 'default_user' },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   counters: {
     easy: { type: Number, default: 0 },
     medium: { type: Number, default: 0 },
@@ -65,6 +65,19 @@ const ProgressSchema = new mongoose.Schema({
       dsa_important_algorithms: false,
     },
   },
+  goals: [{
+    title: String,
+    target: Number,
+    key: String,
+    deadline: Date,
+    achieved: { type: Boolean, default: false },
+  }],
+  history: [{
+    action: String,
+    key: String,
+    value: mongoose.Mixed,
+    timestamp: { type: Date, default: Date.now },
+  }],
 }, { timestamps: true });
 
 module.exports = mongoose.model('Progress', ProgressSchema);

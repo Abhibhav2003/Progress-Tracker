@@ -12,6 +12,12 @@ const DoughnutChart = ({ chartId, data }) => {
     chartInstance.current = new Chart(chartRef.current, {
       type: 'doughnut',
       data: data,
+      options: {
+        plugins: {
+          tooltip: { enabled: true },
+          legend: { position: 'bottom' },
+        },
+      },
     });
 
     return () => {
