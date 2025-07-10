@@ -1,0 +1,136 @@
+.container {
+  max-width: 950px;
+  margin: auto;
+  background: #343a40;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 35px;
+  font-size: 2.8rem;
+  color: #e9ecef;
+}
+
+.section {
+  margin-bottom: 50px;
+  border-bottom: 1px solid #495057;
+  padding-bottom: 30px;
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+.section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  color: #adb5bd;
+  border-bottom: 2px solid #6c757d;
+  padding-bottom: 8px;
+}
+
+canvas {
+  max-width: 300px;
+  margin: 20px auto;
+  display: block;
+}
+
+.card, .checkbox-group label {
+  transition: transform 0.2s;
+}
+
+.card {
+  background: #495057;
+  color: #e9ecef;
+  padding: 20px 25px;
+  margin: 12px 0;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.counter-controls {
+  display: flex;
+  align-items: center;
+}
+
+.counter-controls button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  margin: 0 5px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.counter-controls button:hover {
+  background: #0056b3;
+}
+
+.counter-controls .count {
+  font-size: 1.2rem;
+  min-width: 30px;
+  text-align: center;
+  display: inline-block;
+  color: #e9ecef;
+}
+
+.checkbox-group {
+  padding: 10px 0;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+  font-size: 1.05rem;
+  color: #ced4da;
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+.checkbox-group label:hover {
+  background-color: #495057;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  margin-right: 12px;
+  position: relative;
+  background-color: #343a40;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #007bff;
+}
+
+input[type="checkbox"]:checked::after {
+  content: '✔';
+  color: white;
+  font-size: 12px;
+  position: absolute;
+  left: 3px;
+  top: -1px;
+}
+
+.nested-checkbox-group {
+  margin-left: 20px;
+  padding-left: 15px;
+  border-left: 1px solid #6c757d;
+}
