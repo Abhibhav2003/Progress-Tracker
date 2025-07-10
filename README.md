@@ -6,12 +6,7 @@ A web-based application to track personal progress, goals, and history, built wi
 - [Features](#features)
 - [Demo](#demo)
 - [Installation](#installation)
-- [Usage](#usage)
-- [File Structure](#file-structure)
-- [Technologies Used](#technologies-used)
 - [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
 
 ## Features
 - User authentication with login and signup.
