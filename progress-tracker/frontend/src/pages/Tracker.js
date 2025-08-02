@@ -120,7 +120,7 @@ const Tracker = () => {
       ],
     },
     {
-      title: 'CDS',
+      title: 'Subjects',
       items: [
         {
           label: 'English',
