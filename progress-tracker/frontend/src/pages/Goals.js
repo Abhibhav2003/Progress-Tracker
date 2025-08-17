@@ -8,6 +8,7 @@ const Goals = () => {
   const [target, setTarget] = useState('');
   const [key, setKey] = useState('easy');
   const [deadline, setDeadline] = useState('');
+  const todayStr = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     axios.get('http://localhost:5000/api/progress')
@@ -32,6 +33,19 @@ const Goals = () => {
 
   const handleAddGoal = async (e) => {
     e.preventDefault();
+
+    if (!deadline) {
+      alert('Please select a deadline');
+      return;
+    }
+    const selected = new Date(deadline);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (selected < today) {
+      alert('Deadline cannot be in the past');
+      return;
+    }
+
     try {
       const response = await axios.post('http://localhost:5000/api/progress/goal', { title, target, key, deadline });
       setProgress(response.data);
@@ -70,7 +84,7 @@ const Goals = () => {
             <option value="leetcodeContests">LeetCode Contests</option>
             <option value="codeforcesContests">Codeforces Contests</option>
           </select>
-          <input type="date" value={deadline} onChange={(e) => setDeadline(e.target.value)} />
+          <input type="date" value={deadline} min={todayStr} onChange={(e) => setDeadline(e.target.value)} />
           <button className="add-goal-btn" onClick={handleAddGoal}>+ Add Goal</button>
         </div>
       </div>
