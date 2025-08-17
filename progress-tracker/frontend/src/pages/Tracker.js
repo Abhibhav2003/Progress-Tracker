@@ -27,9 +27,19 @@ const Tracker = () => {
   }, []);
 
   const updateCounter = (key, value) => {
+    console.log('Updating counter:', key, 'to value:', value);
     axios.put(`http://localhost:5000/api/progress/counter/${key}`, { value })
-      .then(response => setProgress(response.data))
-      .catch(error => console.error('Error updating counter:', error));
+      .then(response => {
+        console.log('Counter update successful:', response.data);
+        setProgress(response.data);
+      })
+      .catch(error => {
+        console.error('Error updating counter:', error.response || error);
+        if (error.response) {
+          console.error('Error details:', error.response.data);
+          alert(`Failed to update counter: ${error.response.data.message || 'Unknown error'}`);
+        }
+      });
   };
 
   const updateCheckbox = (key, checked) => {
